@@ -1,7 +1,12 @@
-# youth_policy 아아아
+# 청년 정책 추천 챗봇
 
-## 파이팅
+## Installation
 
-파이팅
+---
 
-줄 바꾸기는 엔터 두 번
+1. Clone the repository:
+
+2. Install dependencies
+
+
+
