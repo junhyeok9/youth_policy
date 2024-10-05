@@ -11,6 +11,8 @@ from langchain_text_splitters import (
 from bs4 import BeautifulSoup
 import warnings
 warnings.filterwarnings("ignore")
+from langchain.vectorstores import Chroma
+from langchain_upstage import UpstageEmbeddings
 
 
 # 환경 변수 이름을 정의
@@ -140,3 +142,35 @@ with open(r'C:\Users\wnsgu\Desktop\upstage\cookbook\combined_documents.json', 'w
 # Save split df_sorted documents as a separate JSON file
 with open(r'C:\Users\wnsgu\Desktop\upstage\cookbook\split_df_sorted.json', 'w', encoding='utf-8') as f:
     json.dump([doc.dict() for doc in split_df_sorted_docs], f, ensure_ascii=False, indent=4)
+
+
+# Set the maximum batch size
+max_batch_size = 5461  # Chroma의 최대 배치 크기
+persist_directory = r'C:\Users\wnsgu\Desktop\upstage\cookbook\chroma_db\new2'
+
+# Set up the embedding function
+embedding_function = UpstageEmbeddings(model="solar-embedding-1-large")
+
+# Initialize the vector store with a persist directory
+db = Chroma(embedding_function=embedding_function, persist_directory=persist_directory)
+
+# Function to add documents in batches and persist the vector store
+def add_documents_in_batches(db, documents, max_batch_size):
+    for i in range(0, len(documents), max_batch_size):
+        batch = documents[i:i + max_batch_size]
+        db.add_documents(batch)
+        print(f"Added batch {i // max_batch_size + 1} of {len(documents) // max_batch_size + 1}")
+        db.persist()  # Save the current state after each batch
+
+try:
+    # Add split documents to the vector store in batches
+    add_documents_in_batches(db, split_docs, max_batch_size)
+
+    # Add split df_sorted documents to the vector store in batches
+    add_documents_in_batches(db, split_df_sorted_docs, max_batch_size)
+
+    # Create a retriever from the vector store
+    retriever = db.as_retriever()
+
+except Exception as e:
+    print(f"An error occurred: {e}")
