@@ -20,8 +20,6 @@ youth_policy
 
 ## Installation
 
----
-
 1. **Clone the repository**:
 
     Clone the repository to your local machine using the following command:
@@ -48,21 +46,32 @@ youth_policy
     ```
 
 
-## 사용 방법
+## Usage
 
-1. 구글 드라이브에서 chroma db 다운로드
+1. **Download the Chroma DB from Google Drive**:
 
-download_db.py 실행
+    Run the ```download_db.py``` script to download the necessary database files.
 
-2. 환경 변수에 API 키 입력:
+    ```bash
+    python download_db.py
+    ```   
 
-.env.example 파일을 .env 파일로 수정
+2. **Set up API keys in environment variables**:
 
+    Rename the ```.env.example``` file to ```.env```, and add your API keys inside the file.
 
-3. chatbot.py 실행
+3. **Run the chatbot**:
 
+    Start the chatbot by running the ```chatbot.py``` script.
 
-4. Open the gradio website in your browser
+    ```bash
+    python chatbot.py
+    ```
 
+4. **Open the Gradio interface**:
 
+    After running the chatbot, open the Gradio interface in your web browser by navigating to:
 
+    ```
+    http://127.0.0.1:7860
+    ```
