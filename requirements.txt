@@ -7,3 +7,7 @@ langgraph==0.2.34
 python-dotenv==1.0.1
 gradio==4.44.1
 gdown==5.2.0
+selenium==4.11.2
+webdriver-manager==3.8.6
+requests==2.31.0
+pandas==2.1.1
