@@ -255,16 +255,48 @@ def chat(question, context):
     return f"{answer}"
 
 
-with gr.Blocks() as demo:
-    chatbot = gr.ChatInterface(
-        chat,
-        examples=[
-            "저는 경기도에 거주하는 23살 대학생입니다. 저에게 맞는 정책을 추천해주세요!"
-        ],
-        title="청년 정책 추천 챗봇",
-        description="당신께 꼭 필요한 청년 정책을 추천해드릴게요!",
-    )
-    chatbot.chatbot.height = 500
+with gr.Blocks(css="""
 
+    .gradio-container {
+        background-color: #E0FFFF; /* 배경을 연한 하늘색으로 설정 */
+        font-family: 'Arial', sans-serif;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+        max-width: 800px; /* 전체 컨테이너의 최대 가로 폭 설정 */
+        margin: 0 auto; /* 중앙 정렬 */
+    }
+    h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #8A2BE2; /* 제목 색상을 짙은 청색으로 */
+    }
+    .description {
+        font-size: 16px;
+        color: black;
+    }
+    .gradio-button {
+        background-color: #3498db; /* 버튼 색상을 파란색으로 */
+        color: #fff;
+        border-radius: 10px;
+    }
+""") as demo:
+
+    with gr.Column():
+        gr.Markdown("<h1 style='text-align: center;'>청년 정책 추천 챗봇</h1>")
+        gr.Markdown("<p class='description' style='text-align: center;'>당신께 꼭 필요한 청년 정책을 추천해드릴게요!</p>")
+
+        chatbot = gr.ChatInterface(
+            fn = chat,
+            chatbot=gr.Chatbot(height=1000),
+            textbox=gr.Textbox(placeholder="질문을 입력해 주세요.", container=False, scale=7),
+            examples=[
+                    ["저는 경기도에 거주하는 23살 대학생입니다. 저에게 맞는 정책을 추천해주세요!"],
+                    ["인천 청년월세 지원사업의 신청 기간은 언제인가요?"]
+            ],
+            retry_btn="다시 보내기",
+            undo_btn="이전챗 삭제",
+            clear_btn="모두 삭제",
+        )
 # Gradio 실행
 demo.launch(debug=True, share=True)
