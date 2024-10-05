@@ -1,6 +1,85 @@
 
 # chromaDB
 
+import chromadb
+from dotenv import load_dotenv
+import json
+import os
+import pandas as pd
+from langchain.docstore.document import Document
+from langchain.prompts import ChatPromptTemplate
+from langchain_text_splitters import (
+    Language,
+    RecursiveCharacterTextSplitter,
+)
+from langchain_upstage import UpstageEmbeddings
+from bs4 import BeautifulSoup
+import warnings
+warnings.filterwarnings("ignore")
+
+upstage_api_key_env_name = "UPSTAGE_API_KEY"
+tavily_api_key_env_name = "TAVILY_API_KEY"
+
+def load_env():
+    # Running in Google Colab
+    if "google.colab" in str(get_ipython()):
+        from google.colab import userdata
+        upstage_api_key = userdata.get(upstage_api_key_env_name)
+        tavily_api_key = userdata.get(tavily_api_key_env_name)
+        return (os.environ.setdefault("UPSTAGE_API_KEY", upstage_api_key),
+        # os.environ.setdefault("LANGCHAIN_API_KEY", langchain_api_key),
+        os.environ.setdefault("TAVILY_API_KEY", tavily_api_key))
+    else:
+        # Running in local Jupyter Notebook
+        from dotenv import load_dotenv
+        load_dotenv()
+        return (os.environ.get(upstage_api_key_env_name),
+        os.environ.get(tavily_api_key_env_name))
+
+UPSTAGE_API_KEY, TAVILY_API_KEY = load_env()
+
+
+upstage_api_key_env_name = "UPSTAGE_API_KEY"
+tavily_api_key_env_name = "TAVILY_API_KEY"
+
+def load_env():
+    # Running in Google Colab
+    if "google.colab" in str(get_ipython()):
+        from google.colab import userdata
+        upstage_api_key = userdata.get(upstage_api_key_env_name)
+        tavily_api_key = userdata.get(tavily_api_key_env_name)
+        return (os.environ.setdefault("UPSTAGE_API_KEY", upstage_api_key),
+        # os.environ.setdefault("LANGCHAIN_API_KEY", langchain_api_key),
+        os.environ.setdefault("TAVILY_API_KEY", tavily_api_key))
+    else:
+        # Running in local Jupyter Notebook
+        from dotenv import load_dotenv
+        load_dotenv()
+        return (os.environ.get(upstage_api_key_env_name),
+        os.environ.get(tavily_api_key_env_name))
+
+UPSTAGE_API_KEY, TAVILY_API_KEY = load_env()
+
+# sample
+sample_text = [
+    "Korea is a beautiful country to visit in the spring.",
+    "The best time to visit Korea is in the fall.",
+    "Best way to find bug is using unit test.",
+    "Python is a great programming language for beginners.",
+    "Sung Kim is a great teacher.",
+]
+
+splits = RecursiveCharacterTextSplitter().create_documents(sample_text)
+
+print(splits)
+
+vectorstore = Chroma.from_documents(
+    documents=splits,
+    ids=[doc.page_content for doc in splits],
+    embedding=UpstageEmbeddings(model="solar-embedding-1-large"),
+)
+
+
 ## 사진, pdf 정보 json 파일 병합
 
 # Load JSON files
