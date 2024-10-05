@@ -17,6 +17,7 @@ from typing import TypedDict
 from typing import List
 import gradio as gr
 
+
 # 환경 변수 이름을 정의
 API_KEYS = {
     "UPSTAGE_API_KEY": None,
