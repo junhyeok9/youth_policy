@@ -1,38 +1,26 @@
 
 # LayoutAnalyzer
 
-## install & Setting
-"""
-
-! pip3 install -qU  markdownify  langchain-upstage rank_bm25 python-dotenv
-
-pip install langchain-community
-
-pip install chromadb
-
-import chromadb
 import os
 import zipfile
-import requests
-from dotenv import load_dotenv
-from typing import List
-import getpass
-from pprint import pprint
-import warnings
 import json
-warnings.filterwarnings("ignore")
-from IPython import get_ipython
+import pandas as pd
+from typing import List
+import warnings
+
+# Environment variable loading
+from dotenv import load_dotenv
+
+# Import related to vector store and document handling
 from langchain_community.vectorstores.chroma import Chroma
 from langchain_upstage import UpstageEmbeddings
-from langchain.docstore.document import Document
-from langchain_text_splitters import (
-    Language,
-    RecursiveCharacterTextSplitter,
-)
-from langchain_upstage import UpstageLayoutAnalysisLoader
-import pandas as pd
 from langchain_core.documents import Document
-from langchain_core.vectorstores import VectorStore
+from langchain_upstage import UpstageLayoutAnalysisLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
+
 
 
 upstage_api_key_env_name = "UPSTAGE_API_KEY"
