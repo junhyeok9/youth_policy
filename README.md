@@ -15,7 +15,7 @@
 - 웹 브라우저를 통한 사용 편의성 제공 (Gradio 인터페이스 활용)
 
 
-## Project Structure
+## Project Structure. 이거 다시 만들어야함!~!!!!
 
 ```
 youth_policy
@@ -101,3 +101,18 @@ This project was created by the following contributors:
 - **강민정** - 입력 필요
 - **원준혁** - 입력 필요
 - **이세은** - 입력 필요
+
+```
+youth_policy
+├─ .gitignore
+├─ chatbot.py
+├─ data
+│  ├─ chromadb.py
+│  ├─ crawling_words.ipynb
+│  ├─ layout_analyzer.py
+│  └─ policy_crawling_and_attached_file_save.py
+├─ download_db.py
+├─ README.md
+└─ requirements.txt
+
+```
