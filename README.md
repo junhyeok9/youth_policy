@@ -96,6 +96,10 @@ youth_policy
     http://127.0.0.1:7860
     ```
 
+## Pipeline
+
+![pipeline](https://github.com/user-attachments/assets/704f4174-3137-43c1-8555-04de8646358e)
+
 ## Example
 
 ![example](https://github.com/user-attachments/assets/06e4137f-2012-471d-a3df-2bf065eb4019)
