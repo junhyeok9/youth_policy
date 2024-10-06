@@ -91,8 +91,7 @@ youth_policy
 
 ## Example
 
-gradio 대화 예시 사진 첨부
-
+![example](https://github.com/user-attachments/assets/06e4137f-2012-471d-a3df-2bf065eb4019)
 
 ## Authors
 
