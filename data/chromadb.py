@@ -148,6 +148,8 @@ with open(r'C:\Users\wnsgu\Desktop\upstage\cookbook\split_df_sorted.json', 'w', 
 max_batch_size = 5461  # Chroma의 최대 배치 크기
 persist_directory = r'C:\Users\wnsgu\Desktop\upstage\cookbook\chroma_db\new2'
 
+
+''' UPSTAGE API 사용 - UpstageEmbeddings '''
 # Set up the embedding function
 embedding_function = UpstageEmbeddings(model="solar-embedding-1-large")
 

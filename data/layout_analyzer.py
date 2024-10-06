@@ -101,6 +101,7 @@ for root, _, files in os.walk(folder_path):
 
 ''' pdf파일 layoutanalyzer 이용해서 변환 '''
 
+''' UPSTAGE API 사용 - UpstageLayoutAnalysisLoader '''
 # Function to analyze PDF files using UpstageLayoutAnalysisLoader
 def layout_analysis(filenames: List[str]) -> List[Document]:
     layout_analysis_loader = UpstageLayoutAnalysisLoader(filenames, output_type="html")
@@ -189,7 +190,6 @@ if not failed_files_df.empty:
 
 
 ''' json으로 변환'''
-
 # documents 리스트를 JSON 형식으로 변환하기
 documents_data = []
 for doc in documents:
@@ -233,8 +233,8 @@ result = pd.concat([a, b, c, d, e, f], axis=0, ignore_index=True)
 df_sorted = result.sort_values(by='title')
 df_sorted.to_csv("df_sorted.csv", index=False)
 
-'''OCR'''
 
+'''OCR'''
 # document ocr을 이용한 파일 정보 가지고오기
 
 # Load API key from .env file
@@ -254,6 +254,8 @@ failed_files = []
 
 for image_file in image_files:
     try:
+
+        ''' UPSTAGE API 사용 - UpstageLayoutAnalysisLoader '''
         # Load the image file with OCR
         layzer = UpstageLayoutAnalysisLoader([image_file], output_type="html", use_ocr=True)
 

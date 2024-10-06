@@ -25,6 +25,7 @@ API_KEYS = {
     "TAVILY_API_KEY": None
 }
 
+
 ''' 환경 변수를 로드하는 함수 정의 '''
 def load_env():
     # running in Google Colab
@@ -41,9 +42,12 @@ def load_env():
 
     return tuple(API_KEYS.values())
 
+
 # 환경 변수 값을 로드하여 변수에 저장
 UPSTAGE_API_KEY, LANGCHAIN_API_KEY, TAVILY_API_KEY = load_env()
 
+
+''' UPSTAGE API 사용 - UpstageEmbeddings '''
 # Set up the embedding function
 embedding_function = UpstageEmbeddings(model="solar-embedding-1-large")
 
@@ -53,10 +57,12 @@ repo_name = "youth_policy"
 if not os.getcwd().endswith(repo_name):
     os.chdir(os.path.join(os.getcwd(), repo_name))
 
+
 persist_directory = "chroma_db"
 # Load the vector store from the persist directory
 db = Chroma(embedding_function=embedding_function, persist_directory=persist_directory)
 retriever = db.as_retriever(search_kwargs={"k": 3})
+
 
 system_prompt = """
 당신은 청년 정책 전문가입니다. 아래 지시 사항을 반드시 지켜서, 청년 정책에 관한 질문에 정확하고 오류 없는 답변을 생성하세요. \
@@ -87,6 +93,7 @@ system_prompt = """
 context: {context}
 """
 
+
 ''' <지시 + context + 대화 기록 + 유저 질문> 템플릿 '''
 prompt = ChatPromptTemplate.from_messages(
     [
@@ -96,6 +103,8 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
+
+''' UPSTAGE API 사용 - ChatUpstage '''
 llm = ChatUpstage(max_tokens=200, temperature=0.2, top_p=0.1)
 chain = prompt | llm | StrOutputParser()
 
@@ -157,18 +166,19 @@ def tavily_search(state: RagState) -> RagState:
         return RagState(context = "검색 결과가 없습니다.")
 
 
+''' UPSTAGE API 사용 - GroundednessCheck '''
 gc = GroundednessCheck()
-
-
 ''' context와 answer를 비교하여 답변의 근거성 평가 '''
 def groundedness_check(state: RagState) -> RagState:
     response = gc.run({"context": state["context"], "answer": state["answer"]})
     # 생성된 response를 Ragstate의 groundedness 변수에 저장
     return RagState(groundedness = response)
 
+
 ''' RagState의 groundedness 변수 값 출력 '''
 def groundedness_condition(state: RagState) -> RagState:
     return state["groundedness"]
+
 
 ''' Build Langgraph '''
 
@@ -226,6 +236,7 @@ workflow.set_entry_point("retrieve")
 # 정의된 workflow를 compile하여 실행 가능한 상태로 만든다
 app = workflow.compile()
 
+
 chat_history = []
 
 ''' Gradio에서 처리될 대화 함수 '''
@@ -270,14 +281,14 @@ with gr.Blocks(css="""
     h1 {
         font-size: 24px;
         font-weight: bold;
-        color: #8A2BE2; /* 제목 색상을 짙은 청색으로 */
+        color: #8A2BE2; 
     }
     .description {
         font-size: 16px;
         color: black;
     }
     .gradio-button {
-        background-color: #3498db; /* 버튼 색상을 파란색으로 */
+        background-color: #3498db;
         color: #fff;
         border-radius: 10px;
     }
